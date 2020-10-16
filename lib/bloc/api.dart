@@ -1,6 +1,19 @@
+import 'dart:convert';
+
 import 'package:http/http.dart' as http;
+import 'package:mursitaffandi_todo_list_ces/model/get_list_response.dart';
 
 const String base_url = 'https://api-mytodo.herokuapp.com/api/v1/';
+
+class Api {
+  Future<ResponseList> getTodoList() async {
+    var url = base_url + 'todo/list';
+    var response = await http.get(url);
+
+    var jsonData = jsonDecode(response.body);
+    return ResponseList.fromJsonMap(jsonData);
+  }
+}
 
 void getTodoList() {
   var url = base_url + 'todo/list';

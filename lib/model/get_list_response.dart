@@ -4,13 +4,8 @@ class ResponseList {
   int status;
   List<ItemTodo> data;
 
-  ResponseList(this.status, this.data);
-
-  factory ResponseList.fromJson(dynamic json) {
-    var tagObjsJson = json['data'] as List;
-    List<ItemTodo> items =
-        tagObjsJson.map((tagJson) => ItemTodo.fromJson(tagJson)).toList();
-
-    return ResponseList(json['status'], json['data'] as List);
-  }
+  ResponseList.fromJsonMap(Map<String, dynamic> map)
+      : status = map["status"],
+        data = List<ItemTodo>.from(
+            map["data"].map((it) => ItemTodo.fromJsonMap(it)));
 }

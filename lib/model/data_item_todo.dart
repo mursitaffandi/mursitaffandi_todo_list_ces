@@ -1,11 +1,10 @@
 class ItemTodo {
-  String id;
+  int id;
   String title;
-  bool complated;
+  bool completed;
 
-  ItemTodo(this.id, this.title, this.complated);
-  factory ItemTodo.fromJson(dynamic json) {
-    return ItemTodo(json['name'] as String, json['quantity'] as String,
-        json['complated'] as bool);
-  }
+  ItemTodo.fromJsonMap(Map<String, dynamic> map)
+      : id = map["id"],
+        title = map["title"],
+        completed = map["completed"];
 }
