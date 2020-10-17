@@ -5,4 +5,8 @@ class ResponseDetailTodo {
   ItemTodo data;
 
   ResponseDetailTodo(this.status, this.data);
+
+  ResponseDetailTodo.fromJsonMap(Map<String, dynamic> map)
+      : status = map["status"],
+        data = ItemTodo.fromJsonMap(map["data"]);
 }

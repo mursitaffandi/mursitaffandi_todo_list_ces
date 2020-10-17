@@ -8,15 +8,10 @@ class ItemTodo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(
-        title,
-      ),
-      trailing: Icon(
-        completed ? Icons.favorite : Icons.favorite_border,
-        color: completed ? Colors.red : null,
-      ),
-      
+    return CheckboxListTile(
+      onChanged: (bool value) {},
+      value: completed,
+      title: Text(title),
     );
   }
 }

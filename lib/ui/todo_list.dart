@@ -1,32 +1,52 @@
 import 'package:flutter/material.dart';
-import 'package:mursitaffandi_todo_list_ces/bloc/api.dart';
-import 'package:mursitaffandi_todo_list_ces/ui/news_page.dart';
-import 'package:mursitaffandi_todo_list_ces/ui/widgets.dart';
+import 'package:mursitaffandi_todo_list_ces/ui/add_list.dart';
+import 'package:mursitaffandi_todo_list_ces/ui/todo_item.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mursitaffandi_todo_list_ces/bloc/get_todo_list_bloc.dart';
+import 'package:mursitaffandi_todo_list_ces/utils/helper.dart';
 
-class TodoList extends StatefulWidget {
-  @override
-  _TodoListState createState() => _TodoListState();
-}
-
-class _TodoListState extends State<TodoList> {
-  Api api = Api();
-  
+class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: myAppBar(),
-        body: SafeArea(
-            child: FutureBuilder(
-                future: api.getTodoList(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return NewsPage(snapshot.data);
-                  } else if (snapshot.hasError) {
-                    print(snapshot.error);
-                    return Center(child: Text("Data tidak tersedia"));
-                  }
+    return BlocBuilder<GetTodoListBloc, GetTodoListState>(
+      builder: (context, state) {
+        if (state is GetTodoListInitial) {
+          BlocProvider.of<GetTodoListBloc>(context).add(FetchTodoList());
+        }
+        if (state is GetTodoListFailed) {
+          return Center(
+            child: Text('failed to fetch todo list'),
+          );
+        }
 
-                  return Center(child: CircularProgressIndicator());
-                })));
+        if (state is GetTodoListSuccess) {
+          return Column(
+            children: [
+              ListView.builder(
+                  itemCount: state.responseList.data.length,
+                  shrinkWrap: true,
+                  physics: ClampingScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return ItemTodo(
+                        state.responseList.data[index].title,
+                        state.responseList.data[index].completed,
+                        state.responseList.data[index].id);
+                  }),
+              FloatingActionButton(
+                onPressed: () {
+                  openNewSreen(context, AddTodoPage(repository: null,));
+                },
+                tooltip: 'Add Task',
+                child: Icon(Icons.add),
+              ),
+            ],
+          );
+        }
+
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
   }
 }

@@ -10,13 +10,13 @@ Widget myAppBar() {
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
         ),
         Text(
-          "List",
+          " List",
           style:
-              TextStyle(color: Color(0xffBB86FC), fontWeight: FontWeight.w600),
+              TextStyle(color: Colors.redAccent, fontWeight: FontWeight.w600),
         )
       ],
     ),
-    backgroundColor: Colors.transparent,
+    backgroundColor: Colors.lightBlue,
     elevation: 0.0,
   );
 }

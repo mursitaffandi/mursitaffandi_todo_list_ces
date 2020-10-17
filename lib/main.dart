@@ -1,19 +1,57 @@
 import 'package:flutter/material.dart';
-import 'ui/todo_list.dart';
+import 'package:http/http.dart' as http;
+import 'package:bloc/bloc.dart';
+import 'package:meta/meta.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-void main() => runApp(MyApp());
+import 'package:mursitaffandi_todo_list_ces/bloc/get_todo_list_bloc.dart';
 
-class MyApp extends StatelessWidget {
+import 'package:mursitaffandi_todo_list_ces/repository/api.dart';
+import 'package:mursitaffandi_todo_list_ces/ui/todo_list.dart';
+
+import 'package:mursitaffandi_todo_list_ces/repository/repo.dart';
+import 'package:mursitaffandi_todo_list_ces/ui/widgets.dart';
+
+class SimpleBlocDelegate extends BlocDelegate {
+  @override
+  void onTransition(Bloc bloc, Transition transition) {
+    super.onTransition(bloc, transition);
+    print(transition);
+  }
+}
+
+void main() {
+  BlocSupervisor.delegate = SimpleBlocDelegate();
+
+  final Repository repository = Repository(
+    apiClient: Api(
+      httpClient: http.Client(),
+    ),
+  );
+
+  runApp(App(
+    repository: repository,
+  ));
+}
+
+class App extends StatelessWidget {
+  final Repository repository;
+
+  App({Key key, @required this.repository})
+      : assert(repository != null),
+        super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-          primarySwatch: Colors.blue,
-          primaryColor: Colors.white,
-          canvasColor: Colors.white,
-          appBarTheme: AppBarTheme(color: Colors.white, elevation: 0)),
-      home: TodoList(),
+      title: 'TodoList CES',
+      home: Scaffold(
+        appBar: myAppBar(),
+        body: BlocProvider(
+          create: (context) => GetTodoListBloc(repository: repository),
+          child: HomePage(),
+        ),
+      ),
     );
   }
 }
