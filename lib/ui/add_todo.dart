@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mursitaffandi_todo_list_ces/bloc/add_todo_bloc.dart';
 import 'package:mursitaffandi_todo_list_ces/main.dart';
 import 'package:mursitaffandi_todo_list_ces/repository/repo.dart';
-import 'package:mursitaffandi_todo_list_ces/ui/todo_list.dart';
 import 'package:mursitaffandi_todo_list_ces/ui/widgets.dart';
 import 'package:mursitaffandi_todo_list_ces/utils/helper.dart';
 

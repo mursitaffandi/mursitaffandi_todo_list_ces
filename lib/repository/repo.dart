@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:mursitaffandi_todo_list_ces/model/general_response.dart';
 import 'package:mursitaffandi_todo_list_ces/model/get_detail_todo_response.dart';
 import 'package:mursitaffandi_todo_list_ces/model/get_list_response.dart';
 import 'package:mursitaffandi_todo_list_ces/repository/api.dart';
@@ -17,7 +18,7 @@ class Repository {
     return await apiClient.detailTodo(id);
   }
 
-  Future<bool> updateTodo(int id, String title, bool completed) async {
+  Future<GeneralResponse> updateTodo(int id, String title, bool completed) async {
     return await apiClient.updateTodo(id, title, completed);
   }
 
@@ -25,7 +26,7 @@ class Repository {
     return await apiClient.addTodo(title);
   }
 
-  Future<bool> deleteTodo(int id) async {
+  Future<GeneralResponse> deleteTodo(int id) async {
     return await apiClient.deleteTodo(id);
   }
 

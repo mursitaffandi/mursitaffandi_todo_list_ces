@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
+import 'package:mursitaffandi_todo_list_ces/model/general_response.dart';
 import 'package:mursitaffandi_todo_list_ces/model/get_detail_todo_response.dart';
 import 'package:mursitaffandi_todo_list_ces/model/get_list_response.dart';
 
@@ -24,18 +25,19 @@ class Api {
     return ResponseList.fromJsonMap(jsonData);
   }
 
-  Future<bool> updateTodo(id, title, completed) async {
+  Future<GeneralResponse> updateTodo(id, title, completed) async {
     var url = _baseUrl + 'todo/update/$id';
-    var response = await this.httpClient.put(url,
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, String>{
-          "title": title,
-          "completed": completed,
-        }));
+    var statusComplete = (completed) ? 1: 0;
+      var response = await this.httpClient.put(url,
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: jsonEncode(<String, dynamic>{
+            "title": title,
+            "completed": statusComplete,
+          }));
 
-    return (response.statusCode != 200) ? true : false;
+    return GeneralResponse.fromJsonMap(jsonDecode(response.body));
   }
 
   Future<bool> addTodo(String title) async {
@@ -62,10 +64,9 @@ class Api {
     return ResponseDetailTodo.fromJsonMap(jsonData);
   }
 
-  Future<bool> deleteTodo(int id) async {
+  Future<GeneralResponse> deleteTodo(int id) async {
     var url = _baseUrl + 'todo/delete/$id';
     var response = await this.httpClient.delete(url);
-
-    return (response.statusCode != 200) ? true : false;
+    return GeneralResponse.fromJsonMap(jsonDecode(response.body));
   }
 }

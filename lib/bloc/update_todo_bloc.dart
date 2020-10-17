@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:mursitaffandi_todo_list_ces/model/general_response.dart';
 import 'package:mursitaffandi_todo_list_ces/repository/repo.dart';
 
 abstract class UpdateTodoState {}
@@ -42,10 +43,14 @@ class UpdateTodoBloc extends Bloc<UpdateTodoEvent, UpdateTodoState> {
   Stream<UpdateTodoState> mapEventToState(UpdateTodoEvent event) async* {
     yield UpdateTodoIsLoading();
     try {
-      final bool response = (event.deleting)
+      final GeneralResponse response = (event.deleting)
           ? await repository.deleteTodo(event.id)
           : await repository.updateTodo(event.id, event.title, event.completed);
-      yield UpdateTodoSuccess(response);
+
+      if (response.status == 200)
+        yield UpdateTodoSuccess(true);
+      else
+        yield UpdateTodoSuccess(true);
     } catch (_) {
       yield UpdateTodoFailed();
     }

@@ -7,19 +7,28 @@ import 'package:mursitaffandi_todo_list_ces/repository/repo.dart';
 import 'package:mursitaffandi_todo_list_ces/ui/widgets.dart';
 import 'package:mursitaffandi_todo_list_ces/utils/helper.dart';
 
-class DetailTodoPage extends StatelessWidget {
-   ItemTodo itemTodo;
+class DetailTodoPage extends StatefulWidget {
+  final ItemTodo itemTodo;
   DetailTodoPage(this.itemTodo);
 
-  bool get updateCheckBox => itemTodo.completed;
-  set updateCheckBox(bool update) => itemTodo.completed;
+  @override
+  _DetailTodoPageState createState() => _DetailTodoPageState();
+}
 
-  final TextEditingController _controllerNumberA = TextEditingController();
+class _DetailTodoPageState extends State<DetailTodoPage> {
+  bool get updateCheckBox => widget.itemTodo.completed;
+  String get titled => widget.itemTodo.title;
+
+  set updateCheckBox(bool update) => widget.itemTodo.completed;
+
+  TextEditingController _controllerNumberA;
+
   final UpdateTodoBloc _calculatorBloc =
       UpdateTodoBloc(repository: Repository());
 
   @override
   Widget build(BuildContext context) {
+    _controllerNumberA = TextEditingController(text: titled);
     return Scaffold(
       appBar: myAppBar(),
       body: BlocProvider<UpdateTodoBloc>(
@@ -39,17 +48,20 @@ class DetailTodoPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   TextFormField(
-                    initialValue: 'itemTodo.title',
+                    controller: _controllerNumberA,
                     decoration: InputDecoration(
                       labelText: 'Title',
                     ),
                     keyboardType: TextInputType.text,
                   ),
                   Checkbox(
+                    value: updateCheckBox,
                     onChanged: (bool value) {
-                      updateCheckBox = value;
+                      setState(() {
+                        updateCheckBox = value;
+                        initState();
+                      });
                     },
-                    value: itemTodo.completed,
                   ),
                   SizedBox(height: 8.0),
                   Row(
@@ -66,7 +78,8 @@ class DetailTodoPage extends StatelessWidget {
                         child: RaisedButton(
                           child: Text('Delete'),
                           onPressed: () {
-                            _calculatorBloc.add(UpdateTodoEvent.delete(itemTodo.id, true));
+                            _calculatorBloc.add(UpdateTodoEvent.delete(
+                                widget.itemTodo.id, true));
                           },
                         ),
                       ),
@@ -77,9 +90,10 @@ class DetailTodoPage extends StatelessWidget {
                     builder: (context, state) {
                       if (state is UpdateTodoInitial) {
                         return Text('-');
+                      } else if (state is UpdateTodoIsLoading) {
+                        return Text('Loadiiiiiiiing');
                       } else if (state is UpdateTodoSuccess) {
-                        if (state.response)
-                          openNewSreen(context, App(repository: Repository()));
+                        openNewSreen(context, App(repository: Repository()));
                         return Text('Result: ');
                       } else if (state is UpdateTodoFailed) {
                         return Text('Error: ');
@@ -99,7 +113,7 @@ class DetailTodoPage extends StatelessWidget {
 
   void updateTodo() {
     String numberA = _controllerNumberA.text.toString();
-    _calculatorBloc.add(UpdateTodoEvent(itemTodo.id, numberA, itemTodo.completed));
+    _calculatorBloc.add(UpdateTodoEvent(
+        widget.itemTodo.id, numberA, widget.itemTodo.completed));
   }
-
 }

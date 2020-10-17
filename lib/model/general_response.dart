@@ -1,6 +1,9 @@
-class Response {
+class GeneralResponse {
   String message;
   int status;
 
-  Response(this.message, this.status);
+  GeneralResponse(this.message, this.status);
+  GeneralResponse.fromJsonMap(Map<String, dynamic> map)
+      : status = map["status"],
+        message = map["message"];
 }
