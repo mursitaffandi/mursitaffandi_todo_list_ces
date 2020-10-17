@@ -26,9 +26,15 @@ class Api {
 
   Future<bool> updateTodo(id, title, completed) async {
     var url = _baseUrl + 'todo/update/$id';
-    var response = await this
-        .httpClient
-        .put(url, body: {"title": title, "completed": completed});
+    var response = await this.httpClient.put(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          "title": title,
+          "completed": completed,
+        }));
+
     return (response.statusCode != 200) ? true : false;
   }
 
@@ -63,8 +69,3 @@ class Api {
     return (response.statusCode != 200) ? true : false;
   }
 }
-
-// void deleteTodo(String id) {
-//   var url = base_url + 'todo/delete/$id';
-//   http.delete(url);
-// }
