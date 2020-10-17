@@ -34,7 +34,13 @@ class Api {
 
   Future<bool> addTodo(String title) async {
     var url = _baseUrl + 'todo/add';
-    var response = await this.httpClient.post(url, body: {"title": title});
+    var response = await this.httpClient.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'title': title,
+        }));
 
     return (response.statusCode != 200) ? true : false;
   }
@@ -56,9 +62,7 @@ class Api {
 
     return (response.statusCode != 200) ? true : false;
   }
-
 }
-
 
 // void deleteTodo(String id) {
 //   var url = base_url + 'todo/delete/$id';
