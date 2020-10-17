@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mursitaffandi_todo_list_ces/ui/add_list.dart';
+import 'package:mursitaffandi_todo_list_ces/ui/add_todo.dart';
 import 'package:mursitaffandi_todo_list_ces/ui/todo_item.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mursitaffandi_todo_list_ces/bloc/get_todo_list_bloc.dart';
@@ -34,7 +34,7 @@ class HomePage extends StatelessWidget {
                   }),
               FloatingActionButton(
                 onPressed: () {
-                  openNewSreen(context, AddTodoPage(repository: null,));
+                  openNewSreen(context, AddTodoPage());
                 },
                 tooltip: 'Add Task',
                 child: Icon(Icons.add),

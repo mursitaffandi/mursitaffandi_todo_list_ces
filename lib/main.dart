@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:mursitaffandi_todo_list_ces/bloc/get_todo_list_bloc.dart';
 
-import 'package:mursitaffandi_todo_list_ces/repository/api.dart';
 import 'package:mursitaffandi_todo_list_ces/ui/todo_list.dart';
 
 import 'package:mursitaffandi_todo_list_ces/repository/repo.dart';
@@ -23,11 +21,7 @@ class SimpleBlocDelegate extends BlocDelegate {
 void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
 
-  final Repository repository = Repository(
-    apiClient: Api(
-      httpClient: http.Client(),
-    ),
-  );
+  final Repository repository = Repository();
 
   runApp(App(
     repository: repository,

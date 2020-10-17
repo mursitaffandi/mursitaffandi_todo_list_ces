@@ -5,12 +5,7 @@ import 'package:mursitaffandi_todo_list_ces/repository/repo.dart';
 import 'package:mursitaffandi_todo_list_ces/ui/widgets.dart';
 
 class AddTodoPage extends StatelessWidget {
-  final Repository repository;
-
-  AddTodoPage({Key key, @required this.repository})
-      : assert(repository != null),
-        super(key: key);
-
+  
   final TextEditingController _controllerTitle = TextEditingController();
 
   @override
@@ -18,15 +13,16 @@ class AddTodoPage extends StatelessWidget {
     return Scaffold(
       appBar: myAppBar(),
       body: BlocProvider(
-        create: (context) => AddTodoBloc(repository: repository),
-        child: BlocListener<AddTodoBloc, AddTodoState>(
-          listener: (context, state) {
+        create: (context) => AddTodoBloc(repository: Repository()),
+        child: BlocBuilder<AddTodoBloc, AddTodoState>(
+          builder: (context, state) {
             if (state is AddTodoFailed) {
               Scaffold.of(context).showSnackBar(SnackBar(
                 content: Text('error'),
               ));
             }
-            Column(
+            return Column(
+            
               children: [
                 TextField(
                   controller: _controllerTitle,

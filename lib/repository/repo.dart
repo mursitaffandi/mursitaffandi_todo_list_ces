@@ -1,14 +1,13 @@
 import 'dart:async';
 
-import 'package:meta/meta.dart';
 import 'package:mursitaffandi_todo_list_ces/model/get_detail_todo_response.dart';
 import 'package:mursitaffandi_todo_list_ces/model/get_list_response.dart';
 import 'package:mursitaffandi_todo_list_ces/repository/api.dart';
+import 'package:http/http.dart' as http;
 
 class Repository {
-  final Api apiClient;
+  final Api apiClient = Api(httpClient: http.Client());
 
-  Repository({@required this.apiClient}) : assert(apiClient != null);
 
   Future<ResponseList> getTodoList() async {
     return await apiClient.getTodoList();

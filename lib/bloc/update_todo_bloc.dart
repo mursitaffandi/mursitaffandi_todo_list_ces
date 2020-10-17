@@ -24,10 +24,11 @@ class UpdateTodoEvent {
   int id;
   String title;
   bool completed;
+  bool deleting = false;
 
   UpdateTodoEvent(this.id, this.title, this.completed);
+  UpdateTodoEvent.delete(this.id, this.deleting);
 }
-
 
 class UpdateTodoBloc extends Bloc<UpdateTodoEvent, UpdateTodoState> {
   final Repository repository;
@@ -39,12 +40,14 @@ class UpdateTodoBloc extends Bloc<UpdateTodoEvent, UpdateTodoState> {
 
   @override
   Stream<UpdateTodoState> mapEventToState(UpdateTodoEvent event) async* {
-      yield UpdateTodoIsLoading();
-      try {
-        final bool response = await repository.updateTodo(event.id, event.title, event.completed);
-        yield UpdateTodoSuccess(response);
-      } catch (_) {
-        yield UpdateTodoFailed();
-      }
+    yield UpdateTodoIsLoading();
+    try {
+      final bool response = (event.deleting)
+          ? await repository.deleteTodo(event.id)
+          : await repository.updateTodo(event.id, event.title, event.completed);
+      yield UpdateTodoSuccess(response);
+    } catch (_) {
+      yield UpdateTodoFailed();
+    }
   }
 }
