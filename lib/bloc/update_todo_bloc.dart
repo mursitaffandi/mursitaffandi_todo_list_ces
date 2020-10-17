@@ -13,6 +13,11 @@ class UpdateTodoSuccess extends UpdateTodoState {
   UpdateTodoSuccess(this.response);
 }
 
+class DeleteTodoSuccess extends UpdateTodoState {
+  final bool response;
+  DeleteTodoSuccess(this.response);
+}
+
 class UpdateTodoFailed extends UpdateTodoState {}
 
 class UpdateTodoEvent {
