@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mursitaffandi_todo_list_ces/ui/add_todo.dart';
-import 'package:mursitaffandi_todo_list_ces/ui/todo_item.dart';
+import 'package:mursitaffandi_todo_list_ces/ui/todo_item_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mursitaffandi_todo_list_ces/bloc/get_todo_list_bloc.dart';
 import 'package:mursitaffandi_todo_list_ces/utils/helper.dart';
@@ -27,10 +27,7 @@ class HomePage extends StatelessWidget {
                   shrinkWrap: true,
                   physics: ClampingScrollPhysics(),
                   itemBuilder: (context, index) {
-                    return ItemTodo(
-                        state.responseList.data[index].title,
-                        state.responseList.data[index].completed,
-                        state.responseList.data[index].id);
+                    return ItemTodoWidget(state.responseList.data[index]);
                   }),
               FloatingActionButton(
                 onPressed: () {
